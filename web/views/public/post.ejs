@@ -1,0 +1,15 @@
+<%- include('../partials/head', { title: post.meta_title || post.title, metaDescription: post.meta_description }) %>
+
+<div class="container" style="padding-top: 40px;">
+  <p class="muted"><a href="/<%= post.username %>">&larr; <%= post.username %></a></p>
+  <h1><%= post.title %></h1>
+  <p class="post-meta" style="margin-bottom: 28px;">
+    <%= new Date(post.published_at + 'Z').toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' }) %>
+    <% if (post.tags.length > 0) { %>
+      &middot; <%= post.tags.join(', ') %>
+    <% } %>
+  </p>
+  <article class="post-body"><%- contentHtml %></article>
+</div>
+
+<%- include('../partials/foot') %>
