@@ -1,0 +1,23 @@
+<%- include('../partials/head', { title: 'New post' }) %>
+
+<div class="container" style="padding-top: 40px;">
+  <h1 style="font-size:1.8rem;">New post</h1>
+  <%- include('../partials/flash', { error: typeof error !== 'undefined' ? error : null }) %>
+
+  <form method="POST" action="/dashboard/posts">
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" required value="<%= typeof values !== 'undefined' ? values.title : '' %>" />
+
+    <label for="tags">Tags</label>
+    <input type="text" id="tags" name="tags" placeholder="comma, separated, tags"
+      value="<%= typeof values !== 'undefined' ? values.tags : '' %>" />
+
+    <label for="content">Content (Markdown)</label>
+    <textarea id="content" name="content" placeholder="Write in Markdown&hellip;"><%= typeof values !== 'undefined' ? values.content : '' %></textarea>
+
+    <button type="submit" class="btn">Save draft</button>
+    <a href="/dashboard" class="btn btn-secondary">Cancel</a>
+  </form>
+</div>
+
+<%- include('../partials/foot') %>

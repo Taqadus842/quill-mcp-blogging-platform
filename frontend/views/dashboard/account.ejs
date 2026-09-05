@@ -1,0 +1,55 @@
+<%- include('../partials/head', { title: 'Account' }) %>
+
+<div class="container" style="padding-top: 40px;">
+  <h1 style="font-size:1.8rem;">Account</h1>
+
+  <%- include('../partials/flash', { notice: typeof notice !== 'undefined' ? notice : null, error: typeof error !== 'undefined' ? error : null }) %>
+
+  <div class="card">
+    <h3>Your MCP URL</h3>
+    <% if (newPlaintextKey) { %>
+      <p class="muted">Copy this now &mdash; for your security, the full key won't be shown again.</p>
+      <div class="key-box"><%= mcpUrl %></div>
+      <p class="field-hint" style="margin-bottom:0;">Add this URL to your IDE's MCP config (Claude Code, Cursor, Windsurf, etc.) to give your agent access to this blog.</p>
+    <% } else { %>
+      <p class="muted">Your MCP URL contains a live key, so it's only shown in full right after it's issued or rotated. Current key: <code><%= activeKeyPrefix %>&hellip;</code></p>
+    <% } %>
+  </div>
+
+  <div class="card">
+    <h3>Keys</h3>
+    <table>
+      <thead><tr><th>Key</th><th>Issued</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        <% keys.forEach(function(k) { %>
+          <tr>
+            <td><code><%= k.key_prefix %>&hellip;</code></td>
+            <td><%= new Date(k.created_at + 'Z').toLocaleDateString() %></td>
+            <td><%= k.revoked_at ? 'Revoked' : 'Active' %></td>
+            <td>
+              <% if (!k.revoked_at) { %>
+                <form method="POST" action="/dashboard/account/keys/<%= k.id %>/revoke"
+                  onsubmit="return confirm('Revoke this key? Any agent using it will lose access immediately.');">
+                  <button type="submit" class="btn btn-danger btn-sm">Revoke</button>
+                </form>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <form method="POST" action="/dashboard/account/keys/rotate"
+      onsubmit="return confirm('Rotate your key? Your current MCP URL will stop working immediately, and you\'ll need to update your IDE config with the new one.');"
+      style="margin-top: 16px;">
+      <button type="submit" class="btn btn-secondary">Rotate key</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>Signed in as</h3>
+    <p class="muted" style="margin-bottom:0;"><%= user.email %> &middot; public blog at <a href="/<%= user.username %>">/<%= user.username %></a></p>
+  </div>
+</div>
+
+<%- include('../partials/foot') %>
