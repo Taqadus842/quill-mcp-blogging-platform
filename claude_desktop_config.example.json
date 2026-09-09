@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "quill": {
+      "command": "node",
+      "args": ["C:/MCP SERVER/dist/src/stdio-bridge.js"],
+      "env": {
+        "MCP_SERVER_URL": "http://127.0.0.1:3000/mcp",
+        "MCP_API_KEY": "replace-with-a-long-random-key"
+      }
+    }
+  }
+}
