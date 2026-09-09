@@ -1,7 +1,0 @@
-node_modules/
-dist/
-.env
-coverage/
-node_modules/
-.env
-.env.example
